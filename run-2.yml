@@ -1,16 +1,11 @@
 ---
-# this is the second playbook that should be run after the first one
-# once the first one is completed, go to every device and do the following before running this playbook:
-# 1. open the browser and go to the homepage
-# 2. pin the bookmarks that you want to be pinned (put any dummy data, it doesn't matter what you pin).
-# 3. close the browser
-# 4. run this playbook
-- name: Continue with main2.yml
+- name: Reset the computer
   hosts: auckland
+
   tasks:
-    # if getting errors, read the error message
-    - name: Run chrome.js to reset pinned bookmarks on homepage
-      ansible.builtin.shell: |
-        node reset-utils/chrome.js
-      args:
-        executable: /bin/bash
+    - include_tasks: tasks/directories.yml
+    - include_tasks: tasks/background.yml
+    - include_tasks: tasks/node.yml
+    - include_tasks: tasks/ssh.yml
+    - include_tasks: tasks/vscode.yml
+    - include_tasks: tasks/chrome.yml

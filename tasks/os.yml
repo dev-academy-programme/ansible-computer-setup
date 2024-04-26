@@ -12,3 +12,10 @@
   args:
     executable: /bin/bash
   become: yes
+
+- name: Restart the computer
+  ansible.builtin.shell: |
+    sudo reboot
+  args:
+    executable: /bin/bash
+  become: yes
