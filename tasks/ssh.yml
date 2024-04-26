@@ -1,0 +1,75 @@
+
+- name: Copy public key
+  ansible.builtin.copy:
+    src: ssh-keys/id_gh_daa.pub
+    dest: "{{ ansible_env.HOME }}/.ssh/id_gh_daa.pub"
+    group: "{{ ansible_env.USER }}"
+    owner: "{{ ansible_env.USER }}"
+    mode: 0600
+
+- name: Copy private key
+  ansible.builtin.copy:
+    src: ssh-keys/id_gh_daa
+    dest: "{{ ansible_env.HOME }}/.ssh/id_gh_daa"
+    group: "{{ ansible_env.USER }}"
+    owner: "{{ ansible_env.USER }}"
+    mode: 0600
+
+- name: Start ssh-agent
+  shell: eval $(ssh-agent -s) && echo $SSH_AUTH_SOCK
+  register: ssh_auth_sock
+
+- name: Add ssh key
+  expect:
+    command: ssh-add "{{ ansible_env.HOME }}/.ssh/id_gh_daa"
+    responses:
+      'Enter passphrase': 'french dressing'
+  environment:
+    SSH_AUTH_SOCK: "{{ ssh_auth_sock.stdout_lines[1] }}"
+
+- name: Clone repo
+  git:
+    repo: git@github.com:kahikatea-2024/test.git
+    dest: "{{ ansible_env.HOME }}/workspace/test"
+    accept_hostkey: yes
+    clone: yes
+  environment:
+    SSH_AUTH_SOCK: "{{ ssh_auth_sock.stdout_lines[1] }}"
+
+
+- name: Append text to README.md
+  lineinfile:
+    path: '{{ ansible_env.HOME }}/workspace/test/README.md'
+    line: '{{ ansible_env.USER }}@{{ ansible_host }}
+    '
+    create: yes
+
+- name: Append text to README.md
+  lineinfile:
+    path: '{{ ansible_env.HOME }}/workspace/test/README.md'
+    line: '{{ ansible_env.USER }}@{{ ansible_host }}
+    '
+    create: yes
+
+- name: Run git-iam
+  ansible.builtin.shell: |
+    export NVM_DIR="{{ ansible_env.HOME }}/.nvm"
+    . "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+    git iam toolseda
+  args:
+    chdir: '{{ ansible_env.HOME }}/workspace/test'
+
+- name: Commit changes
+  command: git commit -am "Add test to README.md"
+  args:
+    chdir: '{{ ansible_env.HOME }}/workspace/test'
+
+- name: Push changes
+  command: git push origin main
+  args:
+    chdir: '{{ ansible_env.HOME }}/workspace/test'
+  environment:
+    SSH_AUTH_SOCK: '{{ ssh_auth_sock.stdout_lines[1] }}'
+
+- name: Delete repo
+  command: rm -rf "{{ ansible_env.HOME }}/.ssh/id_gh_daa.pub"

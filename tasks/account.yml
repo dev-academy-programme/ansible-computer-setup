@@ -1,0 +1,17 @@
+# - name: delete user
+#   ansible.builtin.user:
+#     name: "{{ ansible_env.USER }}"
+#     state: absent
+#
+- name: create user
+  become: yes
+  ansible.builtin.user:
+    name: "{{ user }}"
+    shell: /bin/bash
+    groups: sudo
+    append: yes
+    createhome: yes
+    # hash password
+    password: "{{ password | password_hash('sha512') }}"
+
+

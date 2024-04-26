@@ -1,0 +1,14 @@
+- name: Update snap packages
+  ansible.builtin.shell: |
+    sudo snap refresh
+  args:
+    executable: /bin/bash
+  become: yes
+
+- name: Install OS updates
+  ansible.builtin.shell: |
+    sudo apt-get update
+    sudo apt-get upgrade -y
+  args:
+    executable: /bin/bash
+  become: yes

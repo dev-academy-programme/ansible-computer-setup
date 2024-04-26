@@ -1,0 +1,33 @@
+- name: Create directory for reset-utils
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/reset-utils"
+    state: directory
+    group: "{{ ansible_env.USER }}"
+    owner: "{{ ansible_env.USER }}"
+    mode: 0755
+    state: directory
+
+- name: Copy chrome.js to remote host
+  ansible.builtin.copy:
+    src: tasks/chrome.js
+    # this js can be found in the same directory as this playbook
+    # it's used to create pinned bookmarks
+    # this js file should run in the second playbook
+    dest: "{{ ansible_env.HOME }}/reset-utils/chrome.js"
+    group: "{{ ansible_env.USER }}"
+    owner: "{{ ansible_env.USER }}"
+    mode: 0644
+
+- name: Close/kill Chromium
+  become: yes
+  ansible.builtin.shell: |
+    pkill chrome
+  args:
+    executable: /bin/bash
+  ignore_errors: yes
+    
+- name: Reset Chromium history, cache and cookies
+  ansible.builtin.shell: |
+    rm -rf "{{ ansible_env.HOME }}/snap/chromium/common/chromium/"
+  args:
+    executable: /bin/bash

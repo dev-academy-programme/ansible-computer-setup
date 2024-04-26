@@ -1,0 +1,29 @@
+- name: Install nvm
+  ansible.builtin.shell: >
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+  args:
+    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+
+- name: Activate node LTS version
+  ansible.builtin.shell: |
+    export NVM_DIR="{{ ansible_env.HOME }}/.nvm"
+    . "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+    nvm install --lts && nvm alias default node && nvm current
+  args:
+    creates: "{{ ansible_env.HOME }}/.nvm/versions/node"
+
+- name: Install git-iam package
+  ansible.builtin.shell: |
+    export NVM_DIR="{{ ansible_env.HOME }}/.nvm"
+    . "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+    npm install -g git-iam
+  args:
+    creates: "{{ ansible_env.HOME }}/.npm-global/bin/git-iam"
+
+- name: Setup git-iam
+  ansible.builtin.shell: |
+    export NVM_DIR="{{ ansible_env.HOME }}/.nvm"
+    . "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+    git-iam --init https://gist.githubusercontent.com/toolseda/3ff91a1a6001e350e282dfd3990a5c7a/raw --on-campus
+  args:
+    executable: /bin/bash

@@ -1,0 +1,20 @@
+- name: Delete contents of Pictures, Videos, Music, Documents, Downloads, and Desktop directories
+  ansible.builtin.find:
+    paths: "{{ ansible_env.HOME }}/{{ item }}"
+    patterns: "*"
+  register: files_to_delete
+  loop:
+    - Pictures
+    - Videos
+    - Music
+    - Documents
+    - Downloads
+    - Desktop
+    - workspace
+
+- name: Delete files
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ files_to_delete.results | map(attribute='files') | flatten }}"
+  ignore_errors: yes

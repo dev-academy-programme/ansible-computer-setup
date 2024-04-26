@@ -1,0 +1,12 @@
+- name: Install Zsh
+  apt:
+    name: zsh
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Change default shell to Zsh for the specified user
+  become: yes
+  shell: chsh -s $(which zsh)
+  args:
+    executable: /bin/bash

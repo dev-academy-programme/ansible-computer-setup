@@ -1,0 +1,12 @@
+# deleting browsing history, sessionstore files and cache
+- name: Reset firefox browsing history
+  shell: "rm {{ ansible_env.HOME }}/snap/firefox/common/.mozilla/firefox/*.default*/places.sqlite"
+  ignore_errors: yes
+
+- name: Delete sessionstore files
+  shell: "rm {{ ansible_env.HOME }}/snap/firefox/common/.mozilla/firefox/*default*/sessionstore.*"
+  ignore_errors: yes
+
+- name: Clear firefox cache
+  shell: "rm -rf {{ ansible_env.HOME }}/.cache/mozilla/firefox/"
+  ignore_errors: yes

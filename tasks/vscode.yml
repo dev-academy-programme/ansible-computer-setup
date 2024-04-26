@@ -1,0 +1,67 @@
+- name: Close Visual Studio Code
+  ansible.builtin.shell: |
+    pkill code
+  args:
+    executable: /bin/bash
+  ignore_errors: yes
+
+- name: Copy json file to remote host
+  copy:
+    content: |
+      {
+        "editor.detectIndentation": false,
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
+        "editor.bracketPairColorization.enabled": true,
+        "editor.guides.bracketPairs":"active",
+        "[javascript]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[javascriptreact]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescript]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescriptreact]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[html]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[css]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "prettier.semi": false,
+        "prettier.singleQuote": true
+      }
+    dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
+
+- name: Get the list of installed extensions
+  command: code --list-extensions
+  register: vscode_extensions
+  changed_when: false
+
+- name: Uninstall each extension
+  command: code --uninstall-extension {{ item }}
+  loop: "{{ vscode_extensions.stdout_lines }}"
+
+- name: Install vscode extensions
+  ansible.builtin.shell: |
+    code --install-extension dbaeumer.vscode-eslint
+    code --install-extension esbenp.prettier-vscode
+    code --install-extension ms-vsliveshare.vsliveshare
+    code --install-extension vscode-icons-team.vscode-icons
+    code --install-extension eamodio.gitlens
+    code --install-extension yoavbls.pretty-ts-errors
+    code --install-extension qwtel.sqlite-viewer
+    code --install-extension rangav.vscode-thunder-client
+  args:
+    executable: /bin/bash
