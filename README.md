@@ -1,7 +1,7 @@
 # About
 
 This repository contains the Ansible playbooks to reset a machine after a cohort ends.
-The playbooks are divided into two parts. The first part is `setup1.yml` and the second part is `setup2.yml`.
+The ansible scripts allows you to reset the machine to a clean state and ready for the next cohort.
 
 ## Directory structure
 
@@ -11,8 +11,9 @@ The playbooks are divided into two parts. The first part is `setup1.yml` and the
 ├── ansible.cfg
 ├── gnome-terminal-settings.dconf   # Terminal settings
 ├── inventory.ini                   # Contains the target machines
-├── setup1.yml                      # Run this playbook first
-├── setup2.yml                      # Run this playbook second
+├── run-1.yml                       # Run this playbook first
+├── run-2.yml                       # Run this playbook second
+├── run-3.yml                       # Run this playbook second
 ├── ssh-keys                        # Contains all the ssh keys
 │   ├── id_gh_daa
 │   └── id_gh_daa.pub
@@ -55,12 +56,12 @@ This step is necessary to configure the ssh keys for github and `git iam` to wor
 
 ## Run
 
-1. Run `ansible-playbook -i inventory.ini setup1.yml` to run the first part of the playbook.
+1. Run `ansible-playbook -i inventory.ini run-1.yml` to run the first part of the playbook.
 1. Reboot all machines.
 1. Open chrome and open a new tab.
 1. Click on the `+` icon to create a new bookmark and enter any dummy name in the `Name` and `URL` fields.
 1. Close the browser.
-1. Run `ansible-playbook -i inventory.ini setup2.yml` to run the second part of the playbook. This playbook will setup the pinned bookmarts to the homepage in chrome.
+1. Run `ansible-playbook -i inventory.ini run-2.yml` to run the second part of the playbook. This playbook will setup the pinned bookmarts to the homepage in chrome.
 
 ## Verify
 
