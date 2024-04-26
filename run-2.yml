@@ -1,6 +1,6 @@
 ---
 - name: Reset the computer
-  hosts: auckland
+  hosts: all
 
   tasks:
     - include_tasks: tasks/directories.yml
