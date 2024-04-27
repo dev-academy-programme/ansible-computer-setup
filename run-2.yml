@@ -3,9 +3,9 @@
   hosts: all
 
   tasks:
-    - include_tasks: tasks/directories.yml
+    # - include_tasks: tasks/directories.yml
     - include_tasks: tasks/background.yml
-    - include_tasks: tasks/node.yml
-    - include_tasks: tasks/ssh.yml
-    - include_tasks: tasks/vscode.yml
-    - include_tasks: tasks/chrome.yml
+    # - include_tasks: tasks/node.yml
+    # - include_tasks: tasks/ssh.yml
+    # - include_tasks: tasks/vscode.yml
+    # - include_tasks: tasks/chrome.yml

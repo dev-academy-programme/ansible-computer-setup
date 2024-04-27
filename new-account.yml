@@ -14,3 +14,8 @@
         state: present
 
 
+    - include_tasks: tasks/gnome.yml
+    - include_tasks: tasks/node.yml
+    - include_tasks: tasks/ssh.yml
+    - include_tasks: tasks/vscode.yml
+    - include_tasks: tasks/chrome.yml
