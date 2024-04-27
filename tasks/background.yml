@@ -2,10 +2,10 @@
   become: yes
   ansible.builtin.copy:
     # this image can be found in the same repo
-    src: ../../../images/daa-wallpaper.png
+    src: images/daa-wallpaper.png
     dest: /usr/share/backgrounds/daa-wallpaper.png
     group: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ ansible_env.USER }}"
     mode: 0644
 
 - name: Set background image to Dev Academy
@@ -28,17 +28,17 @@
   become: yes
   ansible.builtin.copy:
     src: gnome-terminal-settings.dconf
-    dest: /home/{{ user }}/gnome-terminal-settings.dcons
+    dest: /home/{{ user }}/gnome-terminal-settings.dconf
 
-- name: Install dbus-x11
-  become: yes
-  ansible.builtin.apt:
-    name: dbus-x11
-    state: present
-
-- name: Load dconf settings for user
-  become: yes
-  ansible.builtin.shell: |
-    sudo -u "{{ user }}" bash -c "dbus-launch --exit-with-session dconf load /org/gnome/terminal/ < /home/{{ user }}/gnome-terminal-settings.dconf"
-  args:
-    executable: /bin/bash
+# - name: Install dbus-x11
+#   become: yes
+#   ansible.builtin.apt:
+#     name: dbus-x11
+#     state: present
+#
+# - name: Load dconf settings for user
+#   become: yes
+#   ansible.builtin.shell: |
+#     sudo -u "{{ user }}" bash -c "dbus-launch --exit-with-session dconf load /org/gnome/terminal/ < /home/{{ user }}/gnome-terminal-settings.dconf"
+#   args:
+#     executable: /bin/bash
