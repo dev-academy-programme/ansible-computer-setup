@@ -1,48 +1,48 @@
-# - name: Create Pictures directory
-#   become: yes
-#   ansible.builtin.file:
-#     path: /home/{{ user }}/Pictures
-#     state: directory
-#     group: "{{ user }}"
-#     owner: "{{ user }}"
-#     mode: 0755
+- name: Create Pictures directory
+  become: yes
+  ansible.builtin.file:
+    path: /home/{{ user }}/Pictures
+    state: directory
+    group: "{{ user }}"
+    owner: "{{ user }}"
+    mode: 0755
 
-# - name: Copy background image to remote host
-#   become: yes
-#   ansible.builtin.copy:
-#     # this image can be found in the same repo
-#     src: images/daa-wallpaper.png
-#     dest: /home/{{ user }}/Pictures/daa-wallpaper.png
-#     group: "{{ user }}"
-#     owner: "{{ user }}"
-#     mode: 0644
+- name: Copy background image to remote host
+  become: yes
+  ansible.builtin.copy:
+    # this image can be found in the same repo
+    src: images/daa-wallpaper.png
+    dest: /home/{{ user }}/Pictures/daa-wallpaper.png
+    group: "{{ user }}"
+    owner: "{{ user }}"
+    mode: 0644
 
-# - name: Install required Python libraries
-#   become: yes
-#   ansible.builtin.apt:
-#     name: python3-psutil
-#     state: present
+- name: Install required Python libraries
+  become: yes
+  ansible.builtin.apt:
+    name: python3-psutil
+    state: present
 
-# - name: Set GTK theme
-#   become: yes
-#   become_user: "{{ user }}"
-#   dconf: 
-#     key: "/org/gnome/desktop/interface/gtk-theme"
-#     value: "'Yaru-dark'"
+- name: Set GTK theme
+  become: yes
+  become_user: "{{ user }}"
+  dconf: 
+    key: "/org/gnome/desktop/interface/gtk-theme"
+    value: "'Yaru-dark'"
 
-# - name: Set wallpaper
-#   become: yes
-#   become_user: "{{ user }}"
-#   dconf:
-#     key: "/org/gnome/desktop/background/picture-uri-dark"
-#     value: "'file:///home/{{ user }}/Pictures/daa-wallpaper.png'"
+- name: Set wallpaper
+  become: yes
+  become_user: "{{ user }}"
+  dconf:
+    key: "/org/gnome/desktop/background/picture-uri-dark"
+    value: "'file:///home/{{ user }}/Pictures/daa-wallpaper.png'"
 
-# - name: Hide Home folder from desktop
-#   become: yes
-#   become_user: "{{ user }}"
-#   dconf:
-#     key: "/org/gnome/shell/extensions/ding/show-home"
-#     value: "false"
+- name: Hide Home folder from desktop
+  become: yes
+  become_user: "{{ user }}"
+  dconf:
+    key: "/org/gnome/shell/extensions/ding/show-home"
+    value: "false"
 
 - name: Set terminal font size
   become: yes
@@ -58,4 +58,36 @@
   dconf:
     key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-theme-colors"
     value: "false"
+    state: present
+
+- name: Set terminal background color
+  become: yes
+  become_user: "{{ user }}"
+  dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-color"
+    value: "'rgb(23,20,33)'"
+    state: present
+
+- name: Set terminal foreground color
+  become: yes
+  become_user: "{{ user }}"
+  dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/foreground-color"
+    value: "'rgb(208,207,204)'"
+    state: present
+
+- name: Unset theme colors
+  become: yes
+  become_user: "{{ user }}"
+  dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-theme-colors"
+    value: "false"
+    state: present
+
+- name: Set palette colors to GNOME Dark
+  become: yes
+  become_user: "{{ user }}"
+  dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/palette"
+    value: "['rgb(46,52,54)', 'rgb(204,0,0)', 'rgb(78,154,6)', 'rgb(196,160,0)', 'rgb(52,101,164)', 'rgb(117,80,123)', 'rgb(6,152,154)', 'rgb(211,215,207)', 'rgb(85,87,83)', 'rgb(239,41,41)', 'rgb(138,226,52)', 'rgb(252,233,79)', 'rgb(114,159,207)', 'rgb(173,127,168)', 'rgb(52,226,226)', 'rgb(238,238,236)']"
     state: present
