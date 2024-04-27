@@ -1,75 +1,111 @@
+- name: Create .ssh directory
+  file:
+    path: "/home/{{ user }}/.ssh"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0700
 
 - name: Copy public key
   ansible.builtin.copy:
     src: ssh-keys/id_gh_daa.pub
-    dest: "{{ ansible_env.HOME }}/.ssh/id_gh_daa.pub"
-    group: "{{ ansible_env.USER }}"
-    owner: "{{ ansible_env.USER }}"
-    mode: 0600
+    dest: "/home/{{ user }}/.ssh/id_gh_daa.pub"
+    group: "{{ user }}"
+    owner: "{{ user }}"
+    mode: 0644
 
 - name: Copy private key
   ansible.builtin.copy:
     src: ssh-keys/id_gh_daa
-    dest: "{{ ansible_env.HOME }}/.ssh/id_gh_daa"
-    group: "{{ ansible_env.USER }}"
-    owner: "{{ ansible_env.USER }}"
+    dest: "/home/{{ user }}/.ssh/id_gh_daa"
+    group: "{{ user }}"
+    owner: "{{ user }}"
     mode: 0600
 
 - name: Start ssh-agent
+  become: yes
+  become_user: "{{ user }}"
   shell: eval $(ssh-agent -s) && echo $SSH_AUTH_SOCK
   register: ssh_auth_sock
 
 - name: Add ssh key
   expect:
-    command: ssh-add "{{ ansible_env.HOME }}/.ssh/id_gh_daa"
+    command: ssh-add /home/{{ user }}/.ssh/id_gh_daa
     responses:
       'Enter passphrase': 'french dressing'
   environment:
     SSH_AUTH_SOCK: "{{ ssh_auth_sock.stdout_lines[1] }}"
 
+- name: Create workspace directory
+  file:
+    path: "/home/{{ user }}/workspace"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0775
+
 - name: Clone repo
+  become: yes
+  become_user: "{{ user }}"
   git:
     repo: git@github.com:kahikatea-2024/test.git
-    dest: "{{ ansible_env.HOME }}/workspace/test"
+    dest: "/home/{{ user }}/workspace/test"
     accept_hostkey: yes
     clone: yes
+    force: yes
   environment:
     SSH_AUTH_SOCK: "{{ ssh_auth_sock.stdout_lines[1] }}"
 
-
 - name: Append text to README.md
   lineinfile:
-    path: '{{ ansible_env.HOME }}/workspace/test/README.md'
-    line: '{{ ansible_env.USER }}@{{ ansible_host }}
-    '
+    path: "/home/{{ user }}/workspace/test/README.md"
+    line: "\n\n{{ user }}@{{ ansible_host }} - {{ ansible_date_time.iso8601_basic_short }}"
     create: yes
+    state: present
 
-- name: Append text to README.md
-  lineinfile:
-    path: '{{ ansible_env.HOME }}/workspace/test/README.md'
-    line: '{{ ansible_env.USER }}@{{ ansible_host }}
-    '
-    create: yes
+- name: Setup git-iam
+  become: yes
+  become_user: "{{ user }}"
+  ansible.builtin.shell: |
+    export NVM_DIR="/home/{{ user }}/.nvm"
+    . "/home/{{ user }}/.nvm/nvm.sh"
+    git-iam --init https://gist.githubusercontent.com/toolseda/3ff91a1a6001e350e282dfd3990a5c7a/raw --on-campus
+  args:
+    executable: /bin/bash
 
 - name: Run git-iam
+  become: yes
+  become_user: "{{ user }}"
   ansible.builtin.shell: |
-    export NVM_DIR="{{ ansible_env.HOME }}/.nvm"
-    . "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+    export NVM_DIR="/home/{{ user }}/.nvm"
+    . "/home/{{ user }}/.nvm/nvm.sh"
     git iam toolseda
   args:
-    chdir: '{{ ansible_env.HOME }}/workspace/test'
+    chdir: "/home/{{ user }}/workspace/test"
 
 - name: Commit changes
   command: git commit -am "Add test to README.md"
   args:
-    chdir: '{{ ansible_env.HOME }}/workspace/test'
+    chdir: "/home/{{ user }}/workspace/test"
 
 - name: Push changes
   command: git push origin main
   args:
-    chdir: '{{ ansible_env.HOME }}/workspace/test'
+    chdir: "/home/{{ user }}/workspace/test"
   environment:
     SSH_AUTH_SOCK: '{{ ssh_auth_sock.stdout_lines[1] }}'
 
+- name: Ensure user has necessary permissions
+  become: yes
+  file:
+    path: "/home/{{ user }}/workspace/test"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    recurse: yes
+    mode: '0755'
+
 - name: Delete repo
-  command: rm -rf "{{ ansible_env.HOME }}/.ssh/id_gh_daa.pub"
+  command: rm -rf "/home/{{ user }}/workspace/test"
+  become: yes
+  become_user: "{{ user }}"
