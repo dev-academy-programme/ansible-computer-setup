@@ -1,12 +1,16 @@
 - name: create user
+  hosts: all
   become: yes
-  ansible.builtin.user:
-    name: "{{ user }}"
-    shell: /bin/bash
-    groups: sudo
-    append: yes
-    createhome: yes
-    # hash password
-    password: "{{ password | password_hash('sha512') }}"
+  tasks:
+    - name: create user
+      ansible.builtin.user:
+        name: "{{ user }}"
+        shell: /bin/bash
+        groups: sudo
+        append: yes
+        createhome: yes
+        # hash password
+        password: "{{ password | password_hash('sha512') }}"
+        state: present
 
 
