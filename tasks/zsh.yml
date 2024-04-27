@@ -2,11 +2,43 @@
   apt:
     name: zsh
     state: present
-    update_cache: yes
   become: yes
+
+- name: Find path to Zshz
+  command: which zsh
+  register: zsh_path
 
 - name: Change default shell to Zsh for the specified user
   become: yes
-  shell: chsh -s $(which zsh)
-  args:
-    executable: /bin/bash
+  become_user: "{{ user }}"
+  expect:
+    command: chsh -s {{ zsh_path.stdout }}
+    responses:
+      Password: "{{ password }}"
+  vars:
+    user_password: "{{ password }}"
+
+- name: Oh-My-Zsh
+  shell: curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer
+  become: yes
+  become_user: "{{ user }}"
+
+- name: Run installer
+  command: sh ~/.oh-my-installer --unattended
+  become: yes
+  become_user: "{{ user }}"
+  ignore_errors: yes
+
+- name: Wait for 5 seconds
+  pause:
+    seconds: 5
+
+- name: Copy .zshrc to user's home directory
+  copy:
+    src: tasks/.zshrc
+    dest: /home/{{ user }}/.zshrc
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0644
+  become: yes
+  become_user: "{{ user }}"
