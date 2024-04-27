@@ -3,16 +3,16 @@
   become: yes
   tasks:
 
-    # - name: create user
-    #   ansible.builtin.user:
-    #     name: "{{ user }}"
-    #     shell: /bin/bash
-    #     groups: sudo
-    #     append: yes
-    #     createhome: yes
-    #     ## hash password
-    #     password: "{{ password | password_hash('sha512') }}"
-    #     state: present
+    - name: create user
+      ansible.builtin.user:
+        name: "{{ user }}"
+        shell: /bin/bash
+        groups: sudo
+        append: yes
+        createhome: yes
+        ## hash password
+        password: "{{ password | password_hash('sha512') }}"
+        state: present
     
     # - name: Install updates
     #   become: yes
@@ -21,13 +21,22 @@
     #     upgrade: dist
     #     autoremove: yes
     #     autoclean: yes
-    
-    # - include_tasks: tasks/gnome.yml
-    # - include_tasks: tasks/zsh.yml
 
-    # - include_tasks: tasks/node.yml
-    # - include_tasks: tasks/ssh.yml
-    # - include_tasks: tasks/vscode.yml
-    # - include_tasks: tasks/chrome.yml
-    
+    - include_tasks: tasks/gnome.yml
+    - include_tasks: tasks/zsh.yml
+    - include_tasks: tasks/node.yml
+    - include_tasks: tasks/ssh.yml
+    - include_tasks: tasks/vscode.yml
+    - include_tasks: tasks/chrome.yml
     - include_tasks: tasks/dock.yml
+
+    - name: Run chrome.js to reset pinned bookmarks on homepage
+      become: yes
+      become_user: "{{ user }}"
+      ansible.builtin.shell: |
+        export NVM_DIR="/home/{{ user }}/.nvm"
+        . "/home/{{ user }}/.nvm/nvm.sh"
+        node reset-utils/chrome.js
+      args:
+        executable: /bin/bash
+
