@@ -3,5 +3,5 @@
   become_user: "{{ user }}"
   dconf:
     key: "/org/gnome/shell/favorite-apps"
-    value: "['firefox.desktop', 'google-chrome.desktop', 'code.desktop', 'org.gnome.Terminal.desktop']"
+    value: "['firefox_firefox.desktop', 'chromium_chromium.desktop', 'code.desktop', 'org.gnome.Terminal.desktop']"
     state: present
