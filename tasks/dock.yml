@@ -1,0 +1,7 @@
+- name: Set the app favourites in the dock
+  become: yes
+  become_user: "{{ user }}"
+  dconf:
+    key: "/org/gnome/shell/favorite-apps"
+    value: "['firefox.desktop', 'google-chrome.desktop', 'code.desktop', 'org.gnome.Terminal.desktop']"
+    state: present

@@ -2,20 +2,32 @@
   hosts: all
   become: yes
   tasks:
-    - name: create user
-      ansible.builtin.user:
-        name: "{{ user }}"
-        shell: /bin/bash
-        groups: sudo
-        append: yes
-        createhome: yes
-        # hash password
-        password: "{{ password | password_hash('sha512') }}"
-        state: present
 
+    # - name: create user
+    #   ansible.builtin.user:
+    #     name: "{{ user }}"
+    #     shell: /bin/bash
+    #     groups: sudo
+    #     append: yes
+    #     createhome: yes
+    #     ## hash password
+    #     password: "{{ password | password_hash('sha512') }}"
+    #     state: present
+    
+    # - name: Install updates
+    #   become: yes
+    #   ansible.builtin.apt:
+    #     update_cache: yes
+    #     upgrade: dist
+    #     autoremove: yes
+    #     autoclean: yes
+    
+    # - include_tasks: tasks/gnome.yml
+    # - include_tasks: tasks/zsh.yml
 
-    - include_tasks: tasks/gnome.yml
-    - include_tasks: tasks/node.yml
-    - include_tasks: tasks/ssh.yml
-    - include_tasks: tasks/vscode.yml
-    - include_tasks: tasks/chrome.yml
+    # - include_tasks: tasks/node.yml
+    # - include_tasks: tasks/ssh.yml
+    # - include_tasks: tasks/vscode.yml
+    # - include_tasks: tasks/chrome.yml
+    
+    - include_tasks: tasks/dock.yml
