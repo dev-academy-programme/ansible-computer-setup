@@ -25,13 +25,3 @@
     npm install -g git-iam
   args:
     creates: "/home/{{ user }}/.npm-global/bin/git-iam"
-
-- name: Setup git-iam
-  become: yes
-  become_user: "{{ user }}"
-  ansible.builtin.shell: |
-    export NVM_DIR="/home/{{ user }}/.nvm"
-    . "/home/{{ user }}/.nvm/nvm.sh"
-    git-iam --init https://gist.githubusercontent.com/toolseda/3ff91a1a6001e350e282dfd3990a5c7a/raw --on-campus
-  args:
-    executable: /bin/bash
