@@ -16,33 +16,37 @@ async function resetChromeSettings() {
     const links = [
       {
         isMostVisited: true,
-        title: 'localhost',
-        url: 'http://localhost:3000/',
+        title: 'localhost:5173',
+        url: 'http://localhost:5173/',
       },
       {
         isMostVisited: true,
-        title: 'Pīwakawaka Org',
+        title: 'GitHub',
         url: 'https://github.com/kahikatea-2024',
       },
       {
-        isMostVisited: false,
-        title: 'MDN',
-        url: 'https://developer.mozilla.org/en-US/',
+        title: 'React',
+        url: 'https://react.dev/',
       },
       {
         isMostVisited: false,
-        title: 'TS Cheatsheets',
-        url: 'https://www.typescriptlang.org/cheatsheets',
+        title: 'Knex',
+        url: 'https://knexjs.org/',
       },
       {
-        isMostVisited: false,
-        title: 'Jest',
-        url: 'https://jestjs.io/docs/using-matchers',
+        isMostVisited: true,
+        title: 'Discord',
+        url: 'https://discord.com/channels/@me',
       },
       {
         isMostVisited: false,
         title: 'Testing Library',
         url: 'https://testing-library.com/docs/',
+      },
+      {
+        isMostVisited: false,
+        title: 'TS Cheatsheets',
+        url: 'https://www.typescriptlang.org/cheatsheets',
       },
     ]
 
