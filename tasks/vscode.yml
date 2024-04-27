@@ -1,11 +1,25 @@
 - name: Close Visual Studio Code
+  become: yes
+  become_user: "{{ user }}"
   ansible.builtin.shell: |
     pkill code
   args:
     executable: /bin/bash
   ignore_errors: yes
 
+- name: Create directory for vscode settings
+  become: yes
+  become_user: "{{ user }}"
+  file:
+    path: "/home/{{ user }}/.config/Code/User"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0775
+
 - name: Copy json file to remote host
+  become: yes
+  become_user: "{{ user }}"
   copy:
     content: |
       {
@@ -42,18 +56,24 @@
         "prettier.semi": false,
         "prettier.singleQuote": true
       }
-    dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
+    dest: "/home/{{ user }}/.config/Code/User/settings.json"
 
 - name: Get the list of installed extensions
+  become: yes
+  become_user: "{{ user }}"
   command: code --list-extensions
   register: vscode_extensions
   changed_when: false
 
 - name: Uninstall each extension
+  become: yes
+  become_user: "{{ user }}"
   command: code --uninstall-extension {{ item }}
   loop: "{{ vscode_extensions.stdout_lines }}"
 
 - name: Install vscode extensions
+  become: yes
+  become_user: "{{ user }}"
   ansible.builtin.shell: |
     code --install-extension dbaeumer.vscode-eslint
     code --install-extension esbenp.prettier-vscode
