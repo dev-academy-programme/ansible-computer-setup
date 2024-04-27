@@ -1,6 +1,8 @@
 ---
 - name: Reset the computer
   hosts: all
+  become: yes
+  become_user: {{ user }}
 
   tasks:
     # - include_tasks: tasks/directories.yml
