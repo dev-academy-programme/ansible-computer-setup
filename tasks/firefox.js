@@ -1,1 +1,2 @@
 user_pref("browser.newtabpage.pinned", "[{\"url\":\"https://github.com/kahikatea-2024\",\"title\":\"GitHub\"},{\"url\":\"https://react.dev/\",\"title\":\"React\"},{\"url\":\"https://knexjs.org/\",\"title\":\"Knex\"},{\"url\":\"https://discord.com/channels/@me\",\"title\":\"Discord\"},{\"url\":\"https://testing-library.com/docs/\",\"title\":\"Testing Library\"},{\"url\":\"https://www.typescriptlang.org/cheatsheets\",\"title\":\"TS Cheatsheets\"}]");
+user_pref("browser.toolbars.bookmarks.visibility", "never");
