@@ -9,26 +9,30 @@ The ansible scripts allows you to reset the machine to a clean state and ready f
 .
 ├── README.md
 ├── ansible.cfg
-├── gnome-terminal-settings.dconf   # Terminal settings
+├── gnome-terminal-settings.dconf   # Terminal settings (colors and fonts)
+├── images
+│   └── daa-wallpaper.png
 ├── inventory.ini                   # Contains the target machines
+├── new-account.yml                 # Create a new account
 ├── run-1.yml                       # Run this playbook first
-├── run-2.yml                       # Run this playbook second
-├── run-3.yml                       # Run this playbook second
+├── run-2.yml
+├── run-3.yml
 ├── ssh-keys                        # Contains all the ssh keys
 │   ├── id_gh_daa
 │   └── id_gh_daa.pub
 └── tasks                           # Contains all the tasks
-    ├── account.yml
-    ├── background.yml
     ├── chrome.js
     ├── chrome.yml
     ├── directories.yml
+    ├── dock.yml
+    ├── firefox.js
     ├── firefox.yml
-    ├── install-zsh.yml
+    ├── gnome.yml
     ├── node.yml
     ├── os.yml
     ├── ssh.yml
-    └── vscode.yml
+    ├── vscode.yml
+    └── zsh.yml
 ```
 
 ## Install
