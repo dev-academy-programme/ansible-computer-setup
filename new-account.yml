@@ -22,21 +22,22 @@
     #     autoremove: yes
     #     autoclean: yes
 
-    - include_tasks: tasks/gnome.yml
-    - include_tasks: tasks/zsh.yml
-    - include_tasks: tasks/node.yml
-    - include_tasks: tasks/ssh.yml
-    - include_tasks: tasks/vscode.yml
-    - include_tasks: tasks/chrome.yml
-    - include_tasks: tasks/dock.yml
+    # - include_tasks: tasks/gnome.yml
+    # - include_tasks: tasks/zsh.yml
+    # - include_tasks: tasks/node.yml
+    # - include_tasks: tasks/ssh.yml
+    # - include_tasks: tasks/vscode.yml
+    # - include_tasks: tasks/chrome.yml
+    # - include_tasks: tasks/dock.yml
+    - include_tasks: tasks/firefox.yml
 
-    - name: Run chrome.js to reset pinned bookmarks on homepage
-      become: yes
-      become_user: "{{ user }}"
-      ansible.builtin.shell: |
-        export NVM_DIR="/home/{{ user }}/.nvm"
-        . "/home/{{ user }}/.nvm/nvm.sh"
-        node reset-utils/chrome.js
-      args:
-        executable: /bin/bash
-
+    # - name: Run chrome.js to reset pinned bookmarks on homepage
+    #   become: yes
+    #   become_user: "{{ user }}"
+    #   ansible.builtin.shell: |
+    #     export NVM_DIR="/home/{{ user }}/.nvm"
+    #     . "/home/{{ user }}/.nvm/nvm.sh"
+    #     node reset-utils/chrome.js
+    #   args:
+    #     executable: /bin/bash
+    #
