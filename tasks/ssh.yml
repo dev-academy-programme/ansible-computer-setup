@@ -69,7 +69,7 @@
   ansible.builtin.shell: |
     export NVM_DIR="/home/{{ user }}/.nvm"
     . "/home/{{ user }}/.nvm/nvm.sh"
-    git-iam --init https://gist.githubusercontent.com/toolseda/3ff91a1a6001e350e282dfd3990a5c7a/raw --on-campus
+    "git-iam --init {{ git_iam_url }} --on-campus"
   args:
     executable: /bin/bash
 
