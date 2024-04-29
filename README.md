@@ -116,11 +116,9 @@ ansible-playbook -i inventory.ini run-2.yml
 ```
 
 NOTE: This playbook may fail at at a step where it tries to push the changes
-to github. If this happens, you can manually push the changes to github and
-comment out the task in `tasks/ssh.yml`.
+to github. If this happens, go to github and confirm that the commit was made.
 
-Then re-run the same command again. Yes, it is safe to run the playbook
-multiple times.
+Press CTRL+C to stop the playbook and move to the next step.
 
 ### Chrome
 
