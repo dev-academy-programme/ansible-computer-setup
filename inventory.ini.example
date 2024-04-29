@@ -4,6 +4,7 @@ ansible_sudo_pass=the-password-used-to-login-to-the-remote-host
 password=the-password-used-to-login-to-the-remote-host
 node_version=20
 user=cohort-name
+git_iam_url=https://url-to-git-iam
 
 [auckland]
 eda@192.168.20.114
