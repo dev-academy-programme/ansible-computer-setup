@@ -22,7 +22,7 @@ async function resetChromeSettings() {
       {
         isMostVisited: true,
         title: "GitHub",
-        url: "https://github.com/{{ cohort }}",
+        url: "https://github.com/matai-2024",
       },
       {
         title: "React",
