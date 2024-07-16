@@ -5,12 +5,16 @@
 # 2. pin the bookmarks that you want to be pinned (put any dummy data, it doesn't matter what you pin).
 # 3. close the browser
 # 4. run this playbook
-- name: Continue with main2.yml
+- name: Continue with run-2.yml
   hosts: auckland
   tasks:
     # if getting errors, read the error message
     - name: Run chrome.js to reset pinned bookmarks on homepage
+      become: yes
+      become_user: "{{ user }}"
       ansible.builtin.shell: |
+        export NVM_DIR="/home/{{ user }}/.nvm"
+        . "/home/{{ user }}/.nvm/nvm.sh"
         node reset-utils/chrome.js
       args:
         executable: /bin/bash
