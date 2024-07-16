@@ -1,0 +1,16 @@
+- name: Delete old account from the previous cohort
+  hosts: all
+  become: yes
+  vars:
+    extracted_user: "{{ inventory_hostname.split('@')[0] }}"
+
+  tasks:
+    - name: Delete user. If it fails, then it means the user is successfully deleted
+      become: yes
+      become_user: root
+      ignore_errors: yes
+      ansible.builtin.user:
+        name: "{{ extracted_user }}"
+        state: absent
+        remove: yes
+        force: yes
