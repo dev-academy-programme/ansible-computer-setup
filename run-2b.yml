@@ -1,0 +1,10 @@
+---
+- name: Reset the computer
+  hosts: all
+  become: yes
+  # this ensures that the machines don't push and pull at the same time
+  serial: 1
+  become_user: "{{ user }}"
+
+  tasks:
+    - include_tasks: tasks/repo.yml
