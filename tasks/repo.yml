@@ -1,12 +1,12 @@
 - name: Start ssh-agent
   become: yes
-  become_user: "{{ user }}"
+  become_user: "{{ new_user }}"
   shell: eval $(ssh-agent -s) && echo $SSH_AUTH_SOCK
   register: ssh_auth_sock
 
 - name: Add ssh key
   expect:
-    command: ssh-add /home/{{ user }}/.ssh/id_gh_daa
+    command: ssh-add /home/{{ new_user }}/.ssh/id_gh_daa
     responses:
       "Enter passphrase": "{{ git_iam_passphrase }}"
   environment:
@@ -14,10 +14,10 @@
 
 - name: Clone repo
   become: yes
-  become_user: "{{ user }}"
+  become_user: "{{ new_user }}"
   git:
-    repo: "git@github.com:{{ cohort }}/test.git"
-    dest: "/home/{{ user }}/workspace/test"
+    repo: "git@github.com:{{ new_user }}/test.git"
+    dest: "/home/{{ new_user }}/workspace/test"
     accept_hostkey: yes
     clone: yes
     force: yes
@@ -26,51 +26,58 @@
 
 - name: Append text to README.md
   lineinfile:
-    path: "/home/{{ user }}/workspace/test/README.md"
-    line: "\n\n{{ user }}@{{ ansible_host }} - {{ ansible_date_time.iso8601_basic_short }}"
+    path: "/home/{{ new_user }}/workspace/test/README.md"
+    line: "\n\n{{ new_user }}@{{ ansible_host }} - {{ ansible_date_time.iso8601_basic_short }}"
     create: yes
     state: present
 
 - name: Run git-iam
   become: yes
-  become_user: "{{ user }}"
+  become_user: "{{ new_user }}"
   ansible.builtin.shell: |
-    export NVM_DIR="/home/{{ user }}/.nvm"
-    . "/home/{{ user }}/.nvm/nvm.sh"
+    export NVM_DIR="/home/{{ new_user }}/.nvm"
+    . "/home/{{ new_user }}/.nvm/nvm.sh"
     git iam toolseda
   args:
-    chdir: "/home/{{ user }}/workspace/test"
+    chdir: "/home/{{ new_user }}/workspace/test"
 
 - name: Commit changes
   command: git commit -am "Add test to README.md"
+  become: yes
+  become_user: "{{ new_user }}"
   args:
-    chdir: "/home/{{ user }}/workspace/test"
+    chdir: "/home/{{ new_user }}/workspace/test"
 
 - name: Pull changes
   command: git pull origin main
+  become: yes
+  become_user: "{{ new_user }}"
   args:
-    chdir: "/home/{{ user }}/workspace/test"
+    chdir: "/home/{{ new_user }}/workspace/test"
   environment:
     SSH_AUTH_SOCK: "{{ ssh_auth_sock.stdout_lines[1] }}"
 
 - name: Push changes
   command: git push origin main
+  become: yes
+  become_user: "{{ new_user }}"
   args:
-    chdir: "/home/{{ user }}/workspace/test"
+    chdir: "/home/{{ new_user }}/workspace/test"
   environment:
     SSH_AUTH_SOCK: "{{ ssh_auth_sock.stdout_lines[1] }}"
 
 - name: Ensure user has necessary permissions
   become: yes
+  become_user: "{{ new_user }}"
   file:
-    path: "/home/{{ user }}/workspace/test"
+    path: "/home/{{ new_user }}/workspace/test"
     state: directory
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    owner: "{{ new_user }}"
+    group: "{{ new_user }}"
     recurse: yes
     mode: "0755"
 
 - name: Delete repo
-  command: rm -rf "/home/{{ user }}/workspace/test"
+  command: rm -rf "/home/{{ new_user }}/workspace/test"
   become: yes
-  become_user: "{{ user }}"
+  become_user: "{{ new_user }}"

@@ -1,14 +1,14 @@
 - name: Get Firefox default profile directory
   become: yes
-  shell: "grep -m 1 'Path=' /home/{{ user }}/snap/firefox/common/.mozilla/firefox/profiles.ini | cut -d'=' -f2"
+  shell: "grep -m 1 'Path=' /home/{{ new_user }}/snap/firefox/common/.mozilla/firefox/profiles.ini | cut -d'=' -f2"
   register: firefox_profile_dir
 
 - name: Copy text file to Mozilla default profile
   copy:
     src: tasks/firefox.js
-    dest: "/home/{{ user }}/snap/firefox/common/.mozilla/firefox/{{ firefox_profile_dir.stdout }}/user.js"
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    dest: "/home/{{ new_user }}/snap/firefox/common/.mozilla/firefox/{{ firefox_profile_dir.stdout }}/user.js"
+    owner: "{{ new_user }}"
+    group: "{{ new_user }}"
     mode: 0644
   register: file_copy_result
 
