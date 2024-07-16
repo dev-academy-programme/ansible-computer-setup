@@ -35,6 +35,18 @@ The ansible scripts allows you to reset the machine to a clean state and ready f
     └── zsh.yml
 ```
 
+## Pre-requisites
+
+Before you begin, ensure that you have connected to all devices in the network by SSH at least once. This is necessary to add the devices to the known hosts file.
+
+```sh
+ssh user@192.168.20.xxx
+```
+
+When prompted, type `yes` to add the device to the known hosts file, then exit the connection by typing `exit`.
+
+Now you can proceed with the following steps.
+
 ## Install Ansible
 
 1. Install [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
