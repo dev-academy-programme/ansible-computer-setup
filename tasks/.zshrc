@@ -42,3 +42,33 @@ source $ZSH/oh-my-zsh.sh
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+# Move to workspace
+cd ~/workspace
+
+eval ssh-agent -s
+ssh-add ~/.ssh/id_gh_daa
+
+tput setaf 80
+
+echo "
+======================================
+| Dev Academy Aotearoa               |
+|                                    |
+| Welcome curious learner!           |
+|                                    |
+| This is your working directory.    |
+| You can use the command 'git clone'| 
+| to download repositories and start |
+| working on projects.               |
+|                                    |
+| Remember to be kind, curious,      |
+| and have fun while you learn.      |
+| Don't be afraid to make mistakes   |
+| and ask for help when needed.      |
+| Happy learning!                    |
+|                                    |
+| Remember to git iam                |
+======================================
+"
