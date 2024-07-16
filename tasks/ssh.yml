@@ -63,15 +63,27 @@
     create: yes
     state: present
 
+- name: Install git-iam
+  become: yes
+  become_user: "{{ user }}"
+  ansible.builtin.shell: |
+    export NVM_DIR="/home/{{ user }}/.nvm"
+    . "/home/{{ user }}/.nvm/nvm.sh"
+    npm install -g git-iam
+  args:
+    executable: /bin/bash
+
 - name: Setup git-iam
   become: yes
   become_user: "{{ user }}"
   ansible.builtin.shell: |
     export NVM_DIR="/home/{{ user }}/.nvm"
     . "/home/{{ user }}/.nvm/nvm.sh"
-    "git-iam --init {{ git_iam_url }} --on-campus"
+    which git-iam
+    $HOME/.nvm/versions/node/$(nvm current)/bin/git-iam --init {{ git_iam_url }} --on-campus
   args:
     executable: /bin/bash
+  register: git_iam_result
 
 - name: Run git-iam
   become: yes
