@@ -1,27 +1,27 @@
 - name: Install nvm
   become: yes
-  become_user: "{{ user }}"
+  become_user: "{{ new_user }}"
   ansible.builtin.shell: >
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
   args:
-    creates: "/home/{{ user }}/.nvm"
+    creates: "/home/{{ new_user }}/.nvm"
 
 - name: Activate node LTS version
   become: yes
-  become_user: "{{ user }}"
+  become_user: "{{ new_user }}"
   ansible.builtin.shell: |
-    export NVM_DIR="/home/{{ user }}/.nvm"
-    . "/home/{{ user }}/.nvm/nvm.sh"
+    export NVM_DIR="/home/{{ new_user }}/.nvm"
+    . "/home/{{ new_user }}/.nvm/nvm.sh"
     nvm install --lts && nvm alias default node && nvm current
   args:
-    creates: "/home/{{ user }}/.nvm/versions/node"
+    creates: "/home/{{ new_user }}/.nvm/versions/node"
 
 - name: Install git-iam package
   become: yes
-  become_user: "{{ user }}"
+  become_user: "{{ new_user }}"
   ansible.builtin.shell: |
-    export NVM_DIR="/home/{{ user }}/.nvm"
-    . "/home/{{ user }}/.nvm/nvm.sh"
+    export NVM_DIR="/home/{{ new_user }}/.nvm"
+    . "/home/{{ new_user }}/.nvm/nvm.sh"
     npm install -g git-iam
   args:
-    creates: "/home/{{ user }}/.npm-global/bin/git-iam"
+    creates: "/home/{{ new_user }}/.npm-global/bin/git-iam"

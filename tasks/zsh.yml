@@ -10,7 +10,7 @@
 
 - name: Change default shell to Zsh for the specified user
   become: yes
-  become_user: "{{ user }}"
+  become_user: "{{ new_user }}"
   expect:
     command: chsh -s {{ zsh_path.stdout }}
     responses:
@@ -21,12 +21,12 @@
 - name: Oh-My-Zsh
   shell: curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer
   become: yes
-  become_user: "{{ user }}"
+  become_user: "{{ new_user }}"
 
 - name: Run installer
   command: sh ~/.oh-my-installer --unattended
   become: yes
-  become_user: "{{ user }}"
+  become_user: "{{ new_user }}"
   ignore_errors: yes
 
 - name: Wait for 5 seconds
@@ -36,9 +36,9 @@
 - name: Copy .zshrc to user's home directory
   copy:
     src: tasks/.zshrc
-    dest: /home/{{ user }}/.zshrc
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    dest: /home/{{ new_user }}/.zshrc
+    owner: "{{ new_user }}"
+    group: "{{ new_user }}"
     mode: 0644
   become: yes
-  become_user: "{{ user }}"
+  become_user: "{{ new_user }}"

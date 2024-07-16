@@ -1,36 +1,36 @@
 - name: Create .ssh directory
   file:
-    path: "/home/{{ user }}/.ssh"
+    path: "/home/{{ new_user }}/.ssh"
     state: directory
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    owner: "{{ new_user }}"
+    group: "{{ new_user }}"
     mode: 0700
 
 - name: Copy public key
   ansible.builtin.copy:
     src: ssh-keys/id_gh_daa.pub
-    dest: "/home/{{ user }}/.ssh/id_gh_daa.pub"
-    group: "{{ user }}"
-    owner: "{{ user }}"
+    dest: "/home/{{ new_user }}/.ssh/id_gh_daa.pub"
+    group: "{{ new_user }}"
+    owner: "{{ new_user }}"
     mode: 0644
 
 - name: Copy private key
   ansible.builtin.copy:
     src: ssh-keys/id_gh_daa
-    dest: "/home/{{ user }}/.ssh/id_gh_daa"
-    group: "{{ user }}"
-    owner: "{{ user }}"
+    dest: "/home/{{ new_user }}/.ssh/id_gh_daa"
+    group: "{{ new_user }}"
+    owner: "{{ new_user }}"
     mode: 0600
 
 - name: Start ssh-agent
   become: yes
-  become_user: "{{ user }}"
+  become_user: "{{ new_user }}"
   shell: eval $(ssh-agent -s) && echo $SSH_AUTH_SOCK
   register: ssh_auth_sock
 
 - name: Add ssh key
   expect:
-    command: ssh-add /home/{{ user }}/.ssh/id_gh_daa
+    command: ssh-add /home/{{ new_user }}/.ssh/id_gh_daa
     responses:
       "Enter passphrase": "{{ git_iam_passphrase }}"
   environment:
@@ -38,8 +38,18 @@
 
 - name: Create workspace directory
   file:
-    path: "/home/{{ user }}/workspace"
+    path: "/home/{{ new_user }}/workspace"
     state: directory
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    owner: "{{ new_user }}"
+    group: "{{ new_user }}"
     mode: 0775
+
+- name: Setup git iam
+  become: yes
+  become_user: "{{ new_user }}"
+  ansible.builtin.shell: |
+    export NVM_DIR="/home/{{ new_user }}/.nvm"
+    . "/home/{{ new_user }}/.nvm/nvm.sh"
+    git-iam --init {{ git_iam_url }} --on-campus
+  args:
+    chdir: "/home/{{ new_user }}/workspace/test"
