@@ -32,7 +32,7 @@
   expect:
     command: ssh-add /home/{{ user }}/.ssh/id_gh_daa
     responses:
-      'Enter passphrase': 'french dressing'
+      "Enter passphrase": "{{ git_iam_passphrase }}"
   environment:
     SSH_AUTH_SOCK: "{{ ssh_auth_sock.stdout_lines[1] }}"
 
@@ -48,7 +48,7 @@
   become: yes
   become_user: "{{ user }}"
   git:
-    repo: git@github.com:kahikatea-2024/test.git
+    repo: "git@github.com:{{ cohort }}/test.git"
     dest: "/home/{{ user }}/workspace/test"
     accept_hostkey: yes
     clone: yes
@@ -93,7 +93,7 @@
   args:
     chdir: "/home/{{ user }}/workspace/test"
   environment:
-    SSH_AUTH_SOCK: '{{ ssh_auth_sock.stdout_lines[1] }}'
+    SSH_AUTH_SOCK: "{{ ssh_auth_sock.stdout_lines[1] }}"
 
 - name: Ensure user has necessary permissions
   become: yes
@@ -103,7 +103,7 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     recurse: yes
-    mode: '0755'
+    mode: "0755"
 
 - name: Delete repo
   command: rm -rf "/home/{{ user }}/workspace/test"
