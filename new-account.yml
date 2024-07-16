@@ -2,15 +2,24 @@
   hosts: all
   become: yes
   tasks:
-    - name: create user
+    - name: Generate password hash
+      # This is a python script that generates a password hash for the new user
+      # And it generates it on the remote machine
+      # {{ password }} is a variable that is passed in from the command line
+      ansible.builtin.command: 'python3 -c ''import crypt; print(crypt.crypt("{{ password }}", crypt.mksalt(crypt.METHOD_SHA512)))'''
+      register: password_hash
+      changed_when: false
+      delegate_to: "{{ inventory_hostname }}"
+      no_log: true
+
+    - name: Create user
       ansible.builtin.user:
         name: "{{ new_user }}"
         shell: /bin/bash
         groups: sudo
         append: yes
         createhome: yes
-        ## hash password
-        password: "{{ password | password_hash('sha512') }}"
+        password: "{{ password_hash.stdout }}"
         state: present
 
     - name: Install updates
@@ -25,17 +34,27 @@
     - include_tasks: tasks/zsh.yml
     - include_tasks: tasks/node.yml
     - include_tasks: tasks/ssh.yml
+    - include_tasks: tasks/repo.yml
     - include_tasks: tasks/vscode.yml
     - include_tasks: tasks/chrome.yml
     - include_tasks: tasks/dock.yml
-    - include_tasks: tasks/firefox.yml
+    # Not working as expected
+    # - include_tasks: tasks/firefox.yml
+
+    - name: Please go to the computer and manually open chromium, then create a bogus pinned bookmark
+      pause:
+        prompt: "Press Enter to continue"
 
     - name: Run chrome.js to reset pinned bookmarks on homepage
       become: yes
-      become_user: "{{ user }}"
+      become_user: "{{ new_user }}"
       ansible.builtin.shell: |
         export NVM_DIR="/home/{{ new_user }}/.nvm"
         . "/home/{{ new_user }}/.nvm/nvm.sh"
-        node reset-utils/chrome.js
+        node /home/{{ new_user }}/reset-utils/chrome.js
       args:
         executable: /bin/bash
+
+    - name: Setup complete
+      debug:
+        msg: "Use {{ new_user }} is now setup and ready to use, you can now run the delete-account.yml playbook to delete the current user"
