@@ -45,7 +45,7 @@ ssh user@192.168.20.xxx
 
 When prompted, type `yes` to add the device to the known hosts file, then exit the connection by typing `exit`.
 
-Now you can proceed with the following steps.
+Now you can proceed with the following steps. You only need to do this once.
 
 ## Install Ansible
 
@@ -60,8 +60,8 @@ identify the machines in the network.
 
 ```ini
 [auckland]
-; eda is the user name and 192.168.1.xxx is the IP address of the machine, where xxx is the unique number for the machine.
-eda@192.168.1.xxx
+; matai-matai-2024 is the user name and 192.168.20.xxx is the IP address of the machine, where xxx is the unique number for the machine.
+matai-2024@192.168.20.xxx
 
 [auckland:vars]
 ; populate the necessary variables here, such as ansible_user, ansible_ssh_pass, etc.
@@ -92,64 +92,6 @@ ansible -i inventory.ini -m ping all
 }
 ```
 
-1. If all machines are reachable, move to the next step.
-
-## Run Ansible Playbooks (METHOD 1)
-
-### Update the Operating System and packages
-
-In this step, we will update the operating system and install the necessary packages.
-
-1. Run the following command
-
-```sh
-ansible-playbook -i inventory.ini run-1.yml
-```
-
-1. Restart/Reboot all machines.
-
-```sh
-ansible all -m reboot -b i inventory.ini
-```
-
-1. Expect to see a lot of output in red, but then the output will turn yellow.
-   This is normal.
-
-At this point, the machines should have been updated and rebooted.
-
-### Reset the machine
-
-Here we will use the `run-2.yml` playbook to reset the machine to a clean state.
-
-1. Run the following command
-
-```sh
-ansible-playbook -i inventory.ini run-2.yml
-```
-
-NOTE: This playbook may fail at at a step where it tries to push the changes
-to github. If this happens, go to github and confirm that the commit was made.
-
-Press CTRL+C to stop the playbook and move to the next step.
-
-### Chrome
-
-This last playbook will setup the pinned bookmarks in chrome and it requires
-you to go to each machine and do the following steps:
-
-1. Open chrome and open a new tab.
-1. Click on the `+` icon to create a new bookmark and enter any dummy name in
-   the `Name` and `URL` fields.
-1. Close the browser.
-1. Repeat for all machines.
-1. Run the last playbook to reset the pinned bookmarks.
-
-```sh
-ansible-playbook -i inventory.ini run-3.yml
-```
-
-Congratulations 🎉, the machines are now ready for the next cohort.
-
 ## Run Ansible Playbooks (METHOD 2)
 
 ### Creating a new account
@@ -164,5 +106,10 @@ cache, or artifacts from the previous account.
 1. Run the following command
 
 ```sh
-ansible-playbook -i inventory.ini new-account.yml
+# before the playbook ends, it will prompt you to open chrome and create fake pinned bookmarks
+ansible-playbook -i inventory.ini run-1.yml
+# once run-1.yml is done, run the following command
+ansible-playbook -i inventory.ini run-2.yml
 ```
+
+Congratulations 🎉, the machines are now ready for the next cohort.
