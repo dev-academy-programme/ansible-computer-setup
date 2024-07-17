@@ -92,9 +92,7 @@ ansible -i inventory.ini -m ping all
 }
 ```
 
-## Run Ansible Playbooks (METHOD 2)
-
-### Creating a new account
+## Run Ansible Playbooks
 
 If you need to create a new account, you can use the `new-account.yml` playbook.
 This playbook will run all of the previous steps and create a new account.
@@ -113,3 +111,10 @@ ansible-playbook -i inventory.ini run-2.yml
 ```
 
 Congratulations 🎉, the machines are now ready for the next cohort.
+
+2. Delete the old linux account
+
+```sh
+ansible-playbook -i inventory.ini delete-account.yml
+# A prompt will ask you to enter the name of the account to delete (the old cohort's account)
+```
