@@ -1,0 +1,8 @@
+- name: Copy custom.conf to /etc/gdm3
+  become: yes
+  copy:
+    src: tasks/custom.conf
+    dest: /etc/gdm3/custom.conf
+    owner: root
+    group: root
+    mode: 0644
