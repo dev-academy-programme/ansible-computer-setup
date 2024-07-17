@@ -1,3 +1,4 @@
+---
 - name: Playbook 1
   hosts: all
   become: yes
