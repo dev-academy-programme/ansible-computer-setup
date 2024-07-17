@@ -1,16 +1,24 @@
 - name: Delete old account from the previous cohort
   hosts: all
   become: yes
-  vars:
-    extracted_user: "{{ inventory_hostname.split('@')[0] }}"
 
   tasks:
+    - name: Prompt for the user to delete
+      ansible.builtin.pause:
+        prompt: "Enter the username to delete: "
+      register: user_to_delete
+
+    - name: Logout the user
+      ansible.builtin.shell: |
+        pkill -KILL -u {{ user_to_delete.user_input }}
+      ignore_errors: yes
+
     - name: Delete user. If it fails, then it means the user is successfully deleted
       become: yes
       become_user: root
       ignore_errors: yes
       ansible.builtin.user:
-        name: "{{ extracted_user }}"
+        name: "{{ user_to_delete.user_input }}"
         state: absent
         remove: yes
         force: yes
