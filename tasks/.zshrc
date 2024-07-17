@@ -47,7 +47,7 @@ export NVM_DIR="$HOME/.nvm"
 # Move to workspace
 cd ~/workspace
 
-eval ssh-agent -s
+eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_gh_daa
 
 tput setaf 80
