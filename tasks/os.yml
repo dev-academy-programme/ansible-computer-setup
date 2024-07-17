@@ -7,6 +7,7 @@
     autoclean: yes
 
 - name: Update snap packages
+  ignore_errors: yes
   ansible.builtin.shell: |
     sudo snap refresh
   args:
