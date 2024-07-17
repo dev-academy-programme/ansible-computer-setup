@@ -1,3 +1,11 @@
+- name: Install updates
+  become: yes
+  ansible.builtin.apt:
+    update_cache: yes
+    upgrade: dist
+    autoremove: yes
+    autoclean: yes
+
 - name: Update snap packages
   ansible.builtin.shell: |
     sudo snap refresh
@@ -9,13 +17,6 @@
   ansible.builtin.shell: |
     sudo apt-get update
     sudo apt-get upgrade -y
-  args:
-    executable: /bin/bash
-  become: yes
-
-- name: Restart the computer
-  ansible.builtin.shell: |
-    sudo reboot
   args:
     executable: /bin/bash
   become: yes

@@ -1,8 +1,26 @@
----
-# This is the first playbook that should be run first
-# Navigate to the tasks/ directory to learn more about the tasks
-- name: Setup Dev Academy computers
+- name: Playbook 1
   hosts: all
-
+  become: yes
   tasks:
     - include_tasks: tasks/os.yml
+    - include_tasks: tasks/gnome.yml
+    - include_tasks: tasks/zsh.yml
+    - include_tasks: tasks/node.yml
+    - include_tasks: tasks/vscode.yml
+    - include_tasks: tasks/dock.yml
+    - include_tasks: tasks/ssh.yml
+    - include_tasks: tasks/chrome.yml
+
+    - name: Please go to the computer and manually open chromium, then create a bogus pinned bookmark
+      pause:
+        prompt: "Press Enter to continue {{ ansible_host }}"
+
+    - name: Run chrome.js to reset pinned bookmarks on homepage
+      become: yes
+      become_user: "{{ new_user }}"
+      ansible.builtin.shell: |
+        export NVM_DIR="/home/{{ new_user }}/.nvm"
+        . "/home/{{ new_user }}/.nvm/nvm.sh"
+        node /home/{{ new_user }}/reset-utils/chrome.js
+      args:
+        executable: /bin/bash

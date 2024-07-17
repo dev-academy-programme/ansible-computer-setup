@@ -1,0 +1,14 @@
+---
+- name: Playbook 2
+  hosts: all
+  become: yes
+  # this ensures that the machines don't push and pull at the same time
+  serial: 1
+  become_user: "{{ user }}"
+
+  tasks:
+    - include_tasks: tasks/repo.yml
+
+    - name: Setup complete
+      debug:
+        msg: "Computer {{ new_user }} is now setup and ready to use, you can now run the delete-account.yml playbook to delete the current user"

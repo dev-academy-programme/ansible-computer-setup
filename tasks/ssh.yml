@@ -51,5 +51,3 @@
     export NVM_DIR="/home/{{ new_user }}/.nvm"
     . "/home/{{ new_user }}/.nvm/nvm.sh"
     git-iam --init {{ git_iam_url }} --on-campus
-  args:
-    chdir: "/home/{{ new_user }}/workspace/test"

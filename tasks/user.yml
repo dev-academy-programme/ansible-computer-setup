@@ -1,0 +1,19 @@
+- name: Generate password hash
+  # This is a python script that generates a password hash for the new user
+  # And it generates it on the remote machine
+  # {{ password }} is a variable that is passed in from the command line
+  ansible.builtin.command: 'python3 -c ''import crypt; print(crypt.crypt("{{ password }}", crypt.mksalt(crypt.METHOD_SHA512)))'''
+  register: password_hash
+  changed_when: false
+  delegate_to: "{{ inventory_hostname }}"
+  no_log: true
+
+- name: Create user
+  ansible.builtin.user:
+    name: "{{ new_user }}"
+    shell: /bin/bash
+    groups: sudo
+    append: yes
+    createhome: yes
+    password: "{{ password_hash.stdout }}"
+    state: present
