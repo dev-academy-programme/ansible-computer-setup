@@ -12,6 +12,12 @@
   environment:
     SSH_AUTH_SOCK: "{{ ssh_auth_sock.stdout_lines[1] }}"
 
+- name: Delete repo if it exists
+  command: rm -rf "/home/{{ new_user }}/workspace/test"
+  become: yes
+  become_user: "{{ new_user }}"
+  ignore_errors: yes
+
 - name: Clone repo
   become: yes
   become_user: "{{ new_user }}"
