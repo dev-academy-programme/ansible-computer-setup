@@ -3,14 +3,9 @@
   become: yes
 
   tasks:
-    - name: Prompt for the user to delete
-      ansible.builtin.pause:
-        prompt: "Enter the username to delete: "
-      register: user_to_delete
-
     - name: Logout the user
       ansible.builtin.shell: |
-        pkill -KILL -u {{ user_to_delete.user_input }}
+        pkill -KILL -u {{ user_to_delete }}
       ignore_errors: yes
 
     - name: Delete user. If it fails, then it means the user is successfully deleted
@@ -18,7 +13,7 @@
       become_user: root
       ignore_errors: yes
       ansible.builtin.user:
-        name: "{{ user_to_delete.user_input }}"
+        name: "{{ user_to_delete }}"
         state: absent
         remove: yes
         force: yes
