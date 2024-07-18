@@ -105,26 +105,35 @@ The playbooks are divided into 3 parts:
 - `run-1.yml`: Creates a new Ubuntu account and configures, zsh, gnome, ssh, and directories.
 - `run-2.yml`: Clones the `test` repo, appends some text to the readme file and it pushes the changes to the repo. `serial` is set to `1` to avoid git conflicts.
 - `run-3.yml`: Sets the bookmarks for chrome. You may need to be close to the machine to create the bookmarks.
-- `delete-account.yml`: Deletes the old account
+- `delete-account.yml`: Deletes the old account (the account of the previous cohort).
 
 This playbook creates a brand new account with the username defined in the
 `inventory.ini` file. This way don't have to deal with clearing cookies, forms,
 cache, or artifacts from the previous account.
 
-1. Run the following command
+1. Run the following command to create a new account and move to the next once the playbook is done
 
 ```sh
-# before the playbook ends, it will prompt you to open chrome and create fake pinned bookmarks
 ansible-playbook -i inventory.ini run-1.yml
-# once run-1.yml is done, run the following command
+```
+
+1. This playbook runs one at a time and it clones the `test` repo, appends some text to the readme file and it pushes the changes to the repo.
+
+```sh
+# This playbook runs one at a time
 ansible-playbook -i inventory.ini run-2.yml
 ```
 
-Congratulations 🎉, the machines are now ready for the next cohort.
+1. Sign in to the machine and open chrome to create a fake bookmark then close chrome and then run the following command
 
-2. Delete the old linux account
+```sh
+ansible-playbook -i inventory.ini run-3.yml
+```
+
+1. Delete the old linux account
 
 ```sh
 ansible-playbook -i inventory.ini delete-account.yml
-# A prompt will ask you to enter the name of the account to delete (the old cohort's account)
 ```
+
+Congratulations 🎉, the machines are now ready for the next cohort.
