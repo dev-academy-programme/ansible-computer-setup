@@ -5,18 +5,18 @@
   tasks:
     # - include_tasks: tasks/os.yml
     # - include_tasks: tasks/user.yml
-    - include_tasks: tasks/autologin.yml
+    # - include_tasks: tasks/autologin.yml
     # - include_tasks: tasks/gnome.yml
-    - include_tasks: tasks/zsh.yml
+    # - include_tasks: tasks/zsh.yml
     # - include_tasks: tasks/node.yml
     # - include_tasks: tasks/vscode.yml
     # - include_tasks: tasks/dock.yml
     # - include_tasks: tasks/ssh.yml
     # - include_tasks: tasks/chrome.yml
 
-    - name: Please go to the computer and manually open chromium, then create a bogus pinned bookmark
+    - name: Waiting for user action
       pause:
-        prompt: "Press Enter to continue {{ ansible_host }}"
+        prompt: "Go to {{ ansible_host }}, logout and login to {{ new user }}, then open chrome and enter a fake pinned bookmark then close the browser"
 
     - name: Run chrome.js to reset pinned bookmarks on homepage
       become: yes

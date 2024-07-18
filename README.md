@@ -1,6 +1,6 @@
 # About
 
-This repository contains the Ansible playbooks to reset a machine after a cohort ends.
+This repository contains the Ansible playbooks to reset the campus computers after a cohort ends.
 The ansible scripts allows you to reset the machine to a clean state and ready for the next cohort.
 
 ## Directory structure
@@ -37,7 +37,9 @@ The ansible scripts allows you to reset the machine to a clean state and ready f
 
 ## Pre-requisites
 
-Before you begin, ensure that you have connected to all devices in the network by SSH at least once. This is necessary to add the devices to the known hosts file.
+1. The ansible playbooks expect that the github organization and the ssh keys for `git iam` are already setup.
+
+2. Before you begin, ensure that you have connected to all devices in the network by SSH at least once. This is necessary to add the devices to the known hosts file.
 
 ```sh
 ssh user@192.168.20.xxx
@@ -94,8 +96,16 @@ ansible -i inventory.ini -m ping all
 
 ## Run Ansible Playbooks
 
-If you need to create a new account, you can use the `new-account.yml` playbook.
-This playbook will run all of the previous steps and create a new account.
+I highly recommend to run the playbooks to target a maximum of 2 machines at a time.
+To get your self familiar with the workflow I suggest you run the playbooks on a single
+machine first and once you are comfortable with the process, you can run the playbooks on 2 machines.
+
+The playbooks are divided into 3 parts:
+
+- `run-1.yml`: Creates a new Ubuntu account and configures, zsh, gnome, ssh, and directories.
+- `run-2.yml`: Clones the `test` repo, appends some text to the readme file and it pushes the changes to the repo. `serial` is set to `1` to avoid git conflicts.
+- `run-3.yml`: Sets the bookmarks for chrome. You may need to be close to the machine to create the bookmarks.
+- `delete-account.yml`: Deletes the old account
 
 This playbook creates a brand new account with the username defined in the
 `inventory.ini` file. This way don't have to deal with clearing cookies, forms,
