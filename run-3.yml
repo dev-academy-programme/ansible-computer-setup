@@ -1,0 +1,20 @@
+---
+- name: Playbook 3
+  hosts: all
+  become: yes
+  tasks:
+    - include_tasks: tasks/chrome.yml
+
+    - name: Waiting for user action
+      pause:
+        prompt: "Go to {{ ansible_host }}, logout and login to {{ new user }}, then open chrome and enter a fake pinned bookmark then close the browser"
+
+    - name: Run chrome.js to reset pinned bookmarks on homepage
+      become: yes
+      become_user: "{{ new_user }}"
+      ansible.builtin.shell: |
+        export NVM_DIR="/home/{{ new_user }}/.nvm"
+        . "/home/{{ new_user }}/.nvm/nvm.sh"
+        node /home/{{ new_user }}/reset-utils/chrome.js
+      args:
+        executable: /bin/bash
