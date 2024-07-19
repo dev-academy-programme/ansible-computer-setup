@@ -13,7 +13,7 @@ The ansible scripts allows you to reset the machine to a clean state and ready f
 ├── images
 │   └── daa-wallpaper.png
 ├── inventory.ini                   # Contains the target machines
-├── new-account.yml                 # Create a new account
+├── delete-account.yml              # Deletes the old account
 ├── run-1.yml                       # Run this playbook first
 ├── run-2.yml
 ├── run-3.yml
@@ -21,18 +21,18 @@ The ansible scripts allows you to reset the machine to a clean state and ready f
 │   ├── id_gh_daa
 │   └── id_gh_daa.pub
 └── tasks                           # Contains all the tasks
-    ├── chrome.js
-    ├── chrome.yml
-    ├── directories.yml
-    ├── dock.yml
-    ├── firefox.js
-    ├── firefox.yml
-    ├── gnome.yml
-    ├── node.yml
-    ├── os.yml
-    ├── ssh.yml
-    ├── vscode.yml
-    └── zsh.yml
+    ├── chrome.js                   # Chrome bookmarks
+    ├── chrome.yml                  # Playbook for chrome bookmarks
+    ├── directories.yml             # Deletes directories and creates new ones
+    ├── dock.yml                    # Adds the necessary apps to the dock
+    ├── firefox.js                  # Firefox bookmarks
+    ├── firefox.yml                 # Playbook for firefox bookmarks
+    ├── gnome.yml                   # Gnome settings
+    ├── node.yml                    # Installs nodejs and nvm
+    ├── os.yml                      # Updates the OS and packages (sometimes it fails)
+    ├── ssh.yml                     # Configures the ssh keys
+    ├── vscode.yml                  # Installs vscode and extensions
+    └── zsh.yml                    # Installs zsh and oh-my-zsh and copies the zshrc file
 ```
 
 ## Pre-requisites
