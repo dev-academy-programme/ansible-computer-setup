@@ -1,11 +1,20 @@
-[all:vars]
-ansible_ssh_pass=the-password-used-to-login-to-the-remote-host
-ansible_sudo_pass=the-password-used-to-login-to-the-remote-host
-password=the-password-used-to-login-to-the-remote-host
-node_version=20
-user=cohort-name
-git_iam_url=https://url-to-git-iam
-
 [auckland]
-eda@192.168.20.114
-; add more hosts here
+; all hostnames must start with admin@192.168.xx.xxx
+; don't use cohort names as hostnames
+admin@192.168.xx.xxx
+
+[auckland:vars]
+; the password used for the ubuntu user (admin)
+ansible_ssh_pass=
+ansible_sudo_pass=
+; the new cohort name will be used to create the new user
+new_user=matai-2024
+; the password used for the ubuntu user
+password=
+; the passphrase used to connect to the git server (git iam)
+git_iam_passphrase=
+; the url that points to all students' names and their github usernames
+; example git_iam_url=https://gist.githubusercontent.com/toolseda/<long number>  --on-campus
+git_iam_url=
+; User to delete (old cohort name)
+user_to_delete=kahikatea-2024
