@@ -32,10 +32,10 @@
     executable: /bin/bash
   ignore_errors: yes
      
-# - name: Reset Chromium history, cache and cookies
-#   become: yes
-#   become_user: "{{ new_user }}"
-#   ansible.builtin.shell: |
-#     rm -rf "/home/{{ new_user }}/snap/chromium/common/chromium/"
-#   args:
-#     executable: /bin/bash
+- name: Reset Chromium history, cache and cookies
+  become: yes
+  become_user: "{{ new_user }}"
+  ansible.builtin.shell: |
+    rm -rf "/home/{{ new_user }}/snap/chromium/common/chromium/"
+  args:
+    executable: /bin/bash

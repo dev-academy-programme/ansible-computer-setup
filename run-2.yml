@@ -11,4 +11,4 @@
 
     - name: Setup complete
       pause:
-        prompt: "Computer {{ new_user }} is now setup and ready to use, you can now run the delete-account.yml playbook to delete the current user, Press Enter to finish this playbook"
+        prompt: "Computer {{ new_user }} is now setup and ready to use, you can now run the run-3.yml playbook to configuer chrome, Press Enter to finish this playbook"
