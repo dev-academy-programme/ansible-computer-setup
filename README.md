@@ -69,6 +69,9 @@ matai-2024@192.168.20.xxx
 ; populate the necessary variables here, such as ansible_user, ansible_ssh_pass, etc.
 ```
 
+The `inventory.ini` file is the only thing you need to add/edit. It contains sensitive information such as the IP address of the machines, the username, and the password.
+Treat this just like `env` files.
+
 ## SSH keys
 
 This step is necessary to configure the ssh keys for github and `git iam` to work.
