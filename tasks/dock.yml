@@ -1,4 +1,4 @@
-- name: Set the app favourites in the dock
+- name: Publish the app favourites in the dock
   become: yes
   become_user: "{{ new_user }}"
   dconf:
@@ -6,7 +6,7 @@
     value: "['firefox_firefox.desktop', 'chromium_chromium.desktop', 'code.desktop', 'org.gnome.Terminal.desktop']"
     state: present
 
-- name: Position the dock to be on the left
+- name: Change the position the dock to be on the left
   become: yes
   become_user: "{{ new_user }}"
   dconf:
