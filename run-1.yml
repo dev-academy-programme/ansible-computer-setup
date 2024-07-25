@@ -3,12 +3,12 @@
   hosts: all
   become: yes
   tasks:
-    - include_tasks: tasks/os.yml
-    - include_tasks: tasks/user.yml
-    - include_tasks: tasks/autologin.yml
-    - include_tasks: tasks/gnome.yml
+    # - include_tasks: tasks/os.yml
+    # - include_tasks: tasks/user.yml
+    # - include_tasks: tasks/autologin.yml
+    # - include_tasks: tasks/gnome.yml
     - include_tasks: tasks/zsh.yml
-    - include_tasks: tasks/node.yml
-    - include_tasks: tasks/vscode.yml
-    - include_tasks: tasks/dock.yml
-    - include_tasks: tasks/ssh.yml
+    # - include_tasks: tasks/node.yml
+    # - include_tasks: tasks/vscode.yml
+    # - include_tasks: tasks/dock.yml
+    # - include_tasks: tasks/ssh.yml
