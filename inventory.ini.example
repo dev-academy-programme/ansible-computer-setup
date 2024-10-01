@@ -8,7 +8,9 @@ admin@192.168.xx.xxx
 ansible_ssh_pass=
 ansible_sudo_pass=
 ; the new cohort name will be used to create the new user
-new_user=matai-2024
+new_user=pohutukawa-2024
+; this is for an example student to test that git iam works. This is what the student types in the terminal. 
+student_preferred_name=
 ; the password used for the ubuntu user
 password=
 ; the passphrase used to connect to the git server (git iam)
@@ -17,4 +19,4 @@ git_iam_passphrase=
 ; example git_iam_url=https://gist.githubusercontent.com/toolseda/<long number>  --on-campus
 git_iam_url=
 ; User to delete (old cohort name)
-user_to_delete=kahikatea-2024
+user_to_delete=matai-2024

@@ -1,3 +1,5 @@
 ssh-keys/id_gh_daa
 ssh-keys/id_gh_daa.pub
 inventory.ini
+.vscode
+.env

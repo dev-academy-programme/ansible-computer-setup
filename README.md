@@ -45,7 +45,7 @@ The ansible scripts allows you to reset the machine to a clean state and ready f
 ssh user@192.168.20.xxx
 ```
 
-When prompted, type `yes` to add the device to the known hosts file, then exit the connection by typing `exit`.
+When prompted, type `yes` to add the device to the known hosts file, enter the password, and then exit the connection by typing `exit`. 
 
 Now you can proceed with the following steps. You only need to do this once.
 
@@ -62,8 +62,8 @@ identify the machines in the network.
 
 ```ini
 [auckland]
-; matai-matai-2024 is the user name and 192.168.20.xxx is the IP address of the machine, where xxx is the unique number for the machine.
-matai-2024@192.168.20.xxx
+; pohutukawa-pohutukawa-2024 is the user name and 192.168.20.xxx is the IP address of the machine, where xxx is the unique number for the machine.
+pohutukawa-2024@192.168.20.xxx
 
 [auckland:vars]
 ; populate the necessary variables here, such as ansible_user, ansible_ssh_pass, etc.
@@ -76,8 +76,8 @@ Treat this just like `env` files.
 
 This step is necessary to configure the ssh keys for github and `git iam` to work.
 
-1. Generate new ssh keys by following the instructions from your wiki
-2. Copy both files, `id_gh_daa` and `id_gh_daa.pub` to the `ssh-keys/` directory
+1. Generate new ssh keys by following the instructions from Part 1 of the `akl-comp-setup` instruction from the teaching guide. 
+2. Create a new directory in the root of this repo called `ssh-keys`and Copy both files, `id_gh_daa` and `id_gh_daa.pub` in there. 
 
 ## Ping the machines
 

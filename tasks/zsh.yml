@@ -1,37 +1,37 @@
-# - name: Install Zsh
-#   apt:
-#     name: zsh
-#     state: present
-#   become: yes
-#
-# - name: Find path to Zshz
-#   command: which zsh
-#   register: zsh_path
-#
-# - name: Change default shell to Zsh for the specified user
-#   become: yes
-#   become_user: "{{ new_user }}"
-#   expect:
-#     command: chsh -s {{ zsh_path.stdout }}
-#     responses:
-#       Password: "{{ password }}"
-#   vars:
-#     user_password: "{{ password }}"
-#
-# - name: Oh-My-Zsh
-#   shell: curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer
-#   become: yes
-#   become_user: "{{ new_user }}"
-#
-# - name: Run installer
-#   command: sh ~/.oh-my-installer --unattended
-#   become: yes
-#   become_user: "{{ new_user }}"
-#   ignore_errors: yes
-#
-# - name: Wait for 5 seconds
-#   pause:
-#     seconds: 5
+- name: Install Zsh
+  apt:
+    name: zsh
+    state: present
+  become: yes
+
+- name: Find path to Zshz
+  command: which zsh
+  register: zsh_path
+
+- name: Change default shell to Zsh for the specified user
+  become: yes
+  become_user: "{{ new_user }}"
+  expect:
+    command: chsh -s {{ zsh_path.stdout }}
+    responses:
+      Password: "{{ password }}"
+  vars:
+    user_password: "{{ password }}"
+
+- name: Oh-My-Zsh
+  shell: curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer
+  become: yes
+  become_user: "{{ new_user }}"
+
+- name: Run installer
+  command: sh ~/.oh-my-installer --unattended
+  become: yes
+  become_user: "{{ new_user }}"
+  ignore_errors: yes
+
+- name: Wait for 5 seconds
+  pause:
+    seconds: 5
 
 - name: Copy .zshrc to user's home directory
   copy:

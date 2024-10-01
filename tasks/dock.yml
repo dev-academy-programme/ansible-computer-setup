@@ -3,6 +3,7 @@
   become_user: "{{ new_user }}"
   dconf:
     key: "/org/gnome/shell/favorite-apps"
+    # Can we add Discord and Zoom as local apps here? 
     value: "['firefox_firefox.desktop', 'chromium_chromium.desktop', 'code.desktop', 'org.gnome.Terminal.desktop']"
     state: present
 
